@@ -1,0 +1,33 @@
+Data Description:
+1. Data I used is raw data [matrix.mtx/barcodes.tsv/genes.tsv] downloaded via http://adsn.ddnetbio.com/ 
+2. Since Read10x() only accept specific name, I wrote a remove.bat file to change the name in every 3-pair of raw data.
+
+File Description:
+1. mtx: raw data sperated into 6 subfolder.
+2. 0827_scRNA.R: code I wrote in this assignment
+3. remove.bat: code I wrote to change the file name
+4. QC and Visualization: output result for visualization requirement
+	- QC is the output of Percentage of MT genes
+	- Visualization is the plot of APOE expression and UMAP
+
+Code Description:
+1. For the first step I warp all the 6 dataset together into the scRNAlist, and create seurat object one by one.
+2. Using PercentageFeatureSet() function to build the feature named "percent.mt"
+3. merge all 6 seurat objects into one named scRNA, then create and save the violin plot before doing the quanlity control
+4. Filtering:
+	- slightly change the QC parameter:  in the paper it discarded the cells outside the 5th and 95th percentile and MT>10%
+5. Save the violin plot after QC
+6. Split object scRNA by "orig.ident", then apply each object into normalization function, select the feature via all these objects, finally do the RPCA integration
+7. Find the anchor and integrate all the data
+8. RunPCA and UMAP for integrated object, and do the clustering.
+9. In this annotaion part, I think the correct answer is to use BRETIGEA package and then run the AddModuleScore function to caculate the module score for each cell type, but it is kind of hard for me to continou this process, so I just change the function of FindNeighbors and FindCluster in order to annotating 8 kinds of cell type in this paper.
+10. After that, I call the plot function and save the result into visualization folder.
+
+Ref Link:
+https://satijalab.org/seurat/articles/pbmc3k_tutorial.html
+https://satijalab.org/seurat/articles/integration_introduction.html
+https://satijalab.org/seurat/articles/integration_rpca.html
+https://satijalab.org/seurat/articles/visualization_vignette.html
+https://www.plob.org/article/21723.html
+https://www.jianshu.com/p/93a1283af04a
+https://www.biostars.org/p/402372/
